@@ -201,7 +201,7 @@
         
         const html = `
             <div style="background:#f9fafb;padding:20px;border-radius:24px;">
-                <h3>📊 Reporte Integral - CajaPro</h3>
+                <h3>📊 Reporte Integral - NovaFox Tally</h3>
                 <h4>📦 Fajos Especiales</h4>
                 <table style="width:100%;border-collapse:collapse;margin-bottom:20px;"><thead><tr style="background:#e2e8f0;"><th>Denominación</th><th>Cantidad</th><th>Total</th></tr></thead>
                 <tbody><tr><td>₡20,000</td><td>${fajos[20000]} fajos (${fajos[20000]*50} und)</td><td>${formatCurrency(fajos[20000]*1000000)}</td></tr>
