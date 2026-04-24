@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Dashboard CajaPro | Sistema Integral de Caja con Proyecciones</title>
+    <!-- Librería para PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+<div class="app-container">
+    <!-- MENÚ LATERAL -->
+    <div class="sidebar">
+        <div class="logo-area">
+            <h2>💰 CajaPro</h2>
+            <p>Control diario • CRC</p>
+        </div>
+        <div class="nav-menu">
+            <div class="nav-item active" data-section="cierre">
+                <span class="nav-icon">🧾</span>
+                <span>Cierre de Caja</span>
+            </div>
+            <div class="nav-item" data-section="proyeccion">
+                <span class="nav-icon">📈</span>
+                <span>Proyección</span>
+            </div>
+            <div class="nav-item" data-section="reportes">
+                <span class="nav-icon">📊</span>
+                <span>Reporte Global</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="main-content">
+        <div class="header-bar">
+            <div class="moneda-badge">
+                <span>🇨🇷</span> <strong>Colones (₡)</strong> <span>CRC</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 1: CIERRE DE CAJA -->
+        <div id="cierreSection" class="section active-section">
+            <div class="card-dashboard">
+                <!-- SECCIÓN DE FAJOS ESPECIALES COMPLETA -->
+                <div class="fajos-especiales">
+                    <h3 style="margin-bottom: 12px; color: #1e3a8a;">📦 Conteo de Fajos (50 billetes por fajo)</h3>
+                    <div class="fajos-container">
+                        <div class="fajo-tipo"><h4>💵 ₡20,000</h4><div class="fajo-control"><span class="fajo-label">Número de fajos:</span><input type="text" id="fajos20000" class="fajo-input" value="0" inputmode="numeric"></div><div class="fajo-subtotal">Subtotal: <span id="subtotalFajo20000">₡0</span></div><div style="font-size: 0.7rem; color: #64748b;">📦 1 fajo = 50 billetes = ₡1,000,000</div></div>
+                        <div class="fajo-tipo"><h4>💵 ₡10,000</h4><div class="fajo-control"><span class="fajo-label">Número de fajos:</span><input type="text" id="fajos10000" class="fajo-input" value="0" inputmode="numeric"></div><div class="fajo-subtotal">Subtotal: <span id="subtotalFajo10000">₡0</span></div><div style="font-size: 0.7rem; color: #64748b;">📦 1 fajo = 50 billetes = ₡500,000</div></div>
+                        <div class="fajo-tipo"><h4>💵 ₡5,000</h4><div class="fajo-control"><span class="fajo-label">Número de fajos:</span><input type="text" id="fajos5000" class="fajo-input" value="0" inputmode="numeric"></div><div class="fajo-subtotal">Subtotal: <span id="subtotalFajo5000">₡0</span></div><div style="font-size: 0.7rem; color: #64748b;">📦 1 fajo = 50 billetes = ₡250,000</div></div>
+                        <div class="fajo-tipo"><h4>💵 ₡2,000</h4><div class="fajo-control"><span class="fajo-label">Número de fajos:</span><input type="text" id="fajos2000" class="fajo-input" value="0" inputmode="numeric"></div><div class="fajo-subtotal">Subtotal: <span id="subtotalFajo2000">₡0</span></div><div style="font-size: 0.7rem; color: #64748b;">📦 1 fajo = 50 billetes = ₡100,000</div></div>
+                        <div class="fajo-tipo"><h4>💵 ₡1,000</h4><div class="fajo-control"><span class="fajo-label">Número de fajos:</span><input type="text" id="fajos1000" class="fajo-input" value="0" inputmode="numeric"></div><div class="fajo-subtotal">Subtotal: <span id="subtotalFajo1000">₡0</span></div><div style="font-size: 0.7rem; color: #64748b;">📦 1 fajo = 50 billetes = ₡50,000</div></div>
+                    </div>
+                </div>
+
+                <h3>💵 Billetes (unidades sueltas)</h3>
+                <div class="denom-grid" id="billetesGrid"></div>
+                
+                <h3>🪙 Monedas (unidades sueltas)</h3>
+                <div class="denom-grid" id="monedasGrid"></div>
+
+                <div class="subtotales-container">
+                    <div class="subtotal-card"><h4>💰 Total en Billetes</h4><div class="amount" id="totalBilletes">₡0</div></div>
+                    <div class="subtotal-card"><h4>🪙 Total en Monedas</h4><div class="amount" id="totalMonedas">₡0</div></div>
+                    <div class="subtotal-card" style="background: linear-gradient(135deg, #dbeafe, #eff6ff);"><h4>🎯 Total en Fajos</h4><div class="amount" id="totalFajos">₡0</div></div>
+                </div>
+
+                <div class="total-box">
+                    <div style="font-weight: 600; margin-bottom: 8px;">📊 TOTAL EFECTIVO GENERAL</div>
+                    <div class="total-number" id="totalEfectivo">₡0</div>
+                </div>
+                <div class="flex-actions"><button id="recalcularBtn">🔄 Recalcular</button></div>
+                <div class="info-adicional">💡 Ingresa la cantidad de billetes/monedas/fajos. Los fajos son de 50 unidades cada uno.</div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: PROYECCIÓN -->
+        <div id="proyeccionSection" class="section">
+            <div class="card-dashboard">
+                <h3>📊 Planificación Financiera Avanzada</h3>
+                
+                <div class="proyeccion-grid">
+                    <div class="input-group">
+                        <label>📈 Promedio de Ventas Mensuales (₡)</label>
+                        <input type="number" id="promVentas" value="5000000" step="100000">
+                        <label>📉 Promedio de Gastos Mensuales (₡)</label>
+                        <input type="number" id="promGastos" value="3000000" step="100000">
+                    </div>
+                    <div class="input-group">
+                        <label>🎯 % de Utilidad Deseada</label>
+                        <input type="number" id="porcUtilidad" value="30" step="5" min="0" max="200">
+                        <div class="porcentaje-ayuda">% sobre las ventas proyectadas</div>
+                        <label>⚙️ % de Gastos sobre Ventas</label>
+                        <input type="number" id="porcGastos" value="40" step="5" min="0" max="100">
+                        <div class="porcentaje-ayuda">% del presupuesto ideal</div>
+                    </div>
+                    <div class="input-group">
+                        <label>📅 Número de Meses a Proyectar</label>
+                        <input type="number" id="numMeses" value="12" min="1" max="60" step="1">
+                        <label>📊 Tipo de Proyección</label>
+                        <select id="tipoProyeccion">
+                            <option value="lineal">Lineal (crecimiento constante)</option>
+                            <option value="optimista">Optimista (+10% anual)</option>
+                            <option value="conservador">Conservador (-5% anual)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="proyeccion-grid">
+                    <div class="resultado-card"><h4>💰 Utilidad Mensual Proyectada</h4><div class="numero" id="utilidadMensual">₡0</div></div>
+                    <div class="resultado-card"><h4>📈 Ventas Totales (Período)</h4><div class="numero" id="ventasTotales">₡0</div></div>
+                    <div class="resultado-card"><h4>📊 Rentabilidad Promedio</h4><div class="numero" id="rentabilidadPromedio">0%</div></div>
+                </div>
+
+                <div class="grafico-container"><canvas id="graficoProyeccion"></canvas></div>
+                <div class="tabla-proyeccion"><h3 style="margin-top: 20px;">📋 Detalle Mensual Proyectado</h3><div id="tablaDetalle"></div></div>
+                <div class="flex-actions"><button id="actualizarProyeccionBtn">🔄 Actualizar Proyección</button></div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 3: REPORTE GLOBAL -->
+        <div id="reportesSection" class="section">
+            <div class="card-dashboard">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    <h3>📄 Reporte Integral - Cierre de Caja</h3>
+                    <button id="exportarPDFBtn" class="btn-pdf">📎 Exportar a PDF</button>
+                </div>
+                <div id="reporteDetallado" style="margin-top: 20px;"><p>Cargando datos...</p></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./js/JsCode.js"></script>
+</body>
+</html>
